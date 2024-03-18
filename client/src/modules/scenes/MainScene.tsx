@@ -173,12 +173,12 @@ export const MainScene = () => {
       frameloop="demand" // for fps limiter
       raycaster={{ params: { Points: { threshold: 0.2 } } }}
       className="rounded-xl"
-      camera={{ fov: 15, position: [0, 700, 0], far: 10000 }}
-      dpr={[0.5, 1]}
-      performance={{
-        min: 0.1,
-        max: 1,
-      }}
+      // camera={{ fov: 15, position: [0, 700, 0], far: 10000 }}
+      // dpr={[0.5, 1]}
+      // performance={{
+      //   min: 0.1,
+      //   max: 1,
+      // }}
       shadows={{
         enabled: true, // Always Enabled, but in Lights.tsx control render mode
         type: THREE.PCFSoftShadowMap,
@@ -210,7 +210,7 @@ export const MainScene = () => {
               <Route path="realm">
                 <CameraShake {...shakeConfig} />
                 <RealmCityViewScene />
-                <Clouds position={cloudsConfig.position as any} material={THREE.MeshBasicMaterial}>
+                {/* <Clouds position={cloudsConfig.position as any} material={THREE.MeshBasicMaterial}>
                   <Cloud
                     concentrate="random"
                     seed={7331}
@@ -233,7 +233,7 @@ export const MainScene = () => {
                     volume={cloudsConfig.volume}
                     color="white"
                   />
-                </Clouds>
+                </Clouds> */}
               </Route>
             </Switch>
           </a.group>

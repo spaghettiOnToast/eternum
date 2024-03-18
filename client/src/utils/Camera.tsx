@@ -95,10 +95,10 @@ const CameraControls = ({ position, target }: Props) => {
       args={[camera, domElement]}
       panSpeed={2}
       //enableRotate={!isMapView} // Disable rotation
-      enableRotate={true}
-      maxDistance={maxDistance}
-      minDistance={minDistance}
-      maxPolarAngle={Math.PI / 3}
+      // enableRotate={true}
+      // maxDistance={maxDistance}
+      // minDistance={minDistance}
+      // maxPolarAngle={Math.PI / 3}
       makeDefault
     />
   );

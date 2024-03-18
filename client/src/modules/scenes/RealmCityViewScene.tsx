@@ -4,6 +4,7 @@ import RealmLandscape from "../../components/cityview/RealmLandscape";
 import useUIStore from "../../hooks/store/useUIStore";
 import { BakeShadows } from "@react-three/drei";
 import RealmBuildings from "../../components/cityview/RealmBuildings";
+import RealmHexagonScene from "../../plugins/mapHexagon/modules/Hexagon";
 
 export const RealmCityViewScene = () => {
   const setIsLoadingScreenEnabled = useUIStore((state) => state.setIsLoadingScreenEnabled);
@@ -12,11 +13,12 @@ export const RealmCityViewScene = () => {
   }, []);
   return (
     <>
-      <Suspense fallback={null}>
-        <RealmLandscape />
+      {/* <Suspense fallback={null}> */}
+      {/* <RealmLandscape />
         <RealmBuildings />
-        <BakeShadows />
-      </Suspense>
+        <BakeShadows /> */}
+      <RealmHexagonScene />
+      {/* </Suspense> */}
       {/* <Model /> */}
     </>
   );
