@@ -34,7 +34,7 @@ export class InputManager {
           this.isDragged = false;
           return;
         }
-        // Check if a double-click occurred
+
         callback(this.raycaster);
       } else {
         callback(this.raycaster);
