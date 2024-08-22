@@ -48,6 +48,10 @@ export default class InstancedModel {
     });
   }
 
+  setGroupPosition(position: THREE.Vector3) {
+    this.group.position.copy(position);
+  }
+
   getCount(): number {
     return this.count;
   }
@@ -81,6 +85,7 @@ export default class InstancedModel {
     this.group.children.forEach((child) => {
       if (child instanceof THREE.InstancedMesh) {
         child.setMatrixAt(index, matrix);
+        child.instanceMatrix.needsUpdate = true;
       }
     });
   }

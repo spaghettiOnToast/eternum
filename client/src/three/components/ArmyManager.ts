@@ -5,11 +5,14 @@ import * as THREE from "three";
 import { GUIManager } from "../helpers/GUIManager";
 import { ArmySystemUpdate } from "../systems/types";
 import { LabelManager } from "./LabelManager";
+import { GLTFLoader } from "three-stdlib";
+import InstancedModel from "./InstancedModel";
 
 const myColor = new THREE.Color(0, 1.5, 0);
 const neutralColor = new THREE.Color(0xffffff);
 const MAX_INSTANCES = 1000;
 const RADIUS_OFFSET = 0.09;
+const MODEL_PATH = "models/knight.glb";
 
 export class ArmyManager {
   private scene: THREE.Scene;
@@ -22,18 +25,52 @@ export class ArmyManager {
   private labelManager: LabelManager;
   private labels: Map<number, THREE.Points> = new Map();
   private movingLabels: Map<number, { startPos: THREE.Vector3; endPos: THREE.Vector3; progress: number }> = new Map();
+  private instancedModel: InstancedModel | undefined;
 
   constructor(scene: THREE.Scene) {
     this.scene = scene;
+    const armyModelFolder = GUIManager.addFolder("Army Model");
+    const armyModelParams = { positionY: 2, scale: 1 };
+    armyModelFolder.add(armyModelParams, "positionY").name("Position");
+
+    this.loadPromise = new Promise<void>((resolve, reject) => {
+      const loader = new GLTFLoader();
+      loader.load(
+        MODEL_PATH,
+        (gltf) => {
+          const model = gltf.scene as THREE.Group;
+          this.instancedModel = new InstancedModel(model, MAX_INSTANCES);
+          this.instancedModel.setCount(0);
+          this.instancedModel.setGroupPosition(new THREE.Vector3(0, 1.15, 0));
+          armyModelFolder
+            .add(
+              {
+                setPosition: () => {
+                  this.instancedModel!.setGroupPosition(new THREE.Vector3(0, armyModelParams.positionY, 0));
+                },
+              },
+              "setPosition",
+            )
+            .name("Set Position");
+
+          this.scene.add(this.instancedModel.group);
+          resolve();
+        },
+        undefined,
+        (error) => {
+          console.error("An error occurred while loading the model:", error);
+          reject(error);
+        },
+      );
+    });
+
     this.dummy = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 1.5, 32));
     this.mesh = new THREE.InstancedMesh(this.dummy.geometry, this.dummy.material, MAX_INSTANCES);
-    this.scale = new THREE.Vector3(1, 1, 1);
+    this.scale = new THREE.Vector3(0.35, 0.35, 0.35);
     this.labelManager = new LabelManager("textures/army_label.png", 1.5);
 
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onRightClick = this.onRightClick.bind(this);
-
-    this.loadPromise = Promise.resolve();
 
     this.mesh.castShadow = true;
 
@@ -44,7 +81,8 @@ export class ArmyManager {
     this.dummy.position.set(0, 0, 0);
     this.dummy.updateMatrix();
     this.mesh.setMatrixAt(0, this.dummy.matrix);
-
+    this.instancedModel?.setMatrixAt(0, this.dummy.matrix);
+    this.instancedModel?.setCount(0);
     this.mesh.count = 0;
     this.mesh.instanceMatrix.needsUpdate = true;
 
@@ -165,6 +203,10 @@ export class ArmyManager {
     this.dummy.scale.copy(this.scale);
     this.dummy.updateMatrix();
     this.mesh.setMatrixAt(index, this.dummy.matrix);
+    this.instancedModel?.setMatrixAt(index, this.dummy.matrix);
+    console.log("armie added", index + 1);
+    this.instancedModel?.setCount(index + 1);
+    console.log(this.instancedModel?.getMatricesAndCount());
     this.mesh.instanceMatrix.needsUpdate = true;
     // Update the bounding sphere of the InstancedMesh
     this.mesh.computeBoundingSphere();
@@ -230,6 +272,7 @@ export class ArmyManager {
       this.dummy.scale.copy(this.scale);
       this.dummy.updateMatrix();
       this.mesh.setMatrixAt(index, this.dummy.matrix);
+      this.instancedModel?.setMatrixAt(index, this.dummy.matrix);
 
       const entityId = this.mesh.userData.entityIdMap.get(index);
     });
@@ -266,6 +309,7 @@ export class ArmyManager {
 
     const newMatrix = new THREE.Matrix4().scale(new THREE.Vector3(0, 0, 0));
     this.mesh.setMatrixAt(matrixIndex, newMatrix);
+    this.instancedModel?.removeInstance(matrixIndex);
 
     if (!this.armies.delete(entityId)) {
       throw new Error(`Couldn't delete army ${entityId}`);
