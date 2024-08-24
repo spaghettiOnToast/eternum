@@ -4,10 +4,7 @@ import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { SetupResult } from "../setup";
 
 export class StaminaManager {
-  constructor(
-    private setup: SetupResult,
-    private armyEntityId: ID,
-  ) {}
+  constructor(private setup: SetupResult, private armyEntityId: ID) {}
 
   public getStaminaConfig() {
     const knightConfig = getComponentValue(
@@ -48,13 +45,11 @@ export class StaminaManager {
     }
 
     const last_refill_tick = armyOnchainStamina?.last_refill_tick;
-
     if (last_refill_tick >= BigInt(currentArmiesTick)) {
       return structuredClone(armyOnchainStamina);
     }
 
     const newStamina = this.refill(currentArmiesTick, last_refill_tick, armyOnchainStamina.amount);
-
     return newStamina;
   }
 
