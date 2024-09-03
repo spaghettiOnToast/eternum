@@ -373,6 +373,27 @@ export function defineContractComponents(world: World) {
         },
       );
     })(),
+    PromptMessage: (() => {
+      return defineComponent(
+        world,
+        {
+          identity: RecsType.BigInt,
+          event_id: RecsType.Number,
+          event_tag: RecsType.String,
+          prompt: RecsType.String,
+          timestamp: RecsType.Number,
+        },
+        {
+          metadata: {
+            namespace: "haiku",
+            name: "PromptMessage",
+            types: ["ContractAddress", "u32", "u64"],
+            customTypes: ["ByteArray", "ByteArray"],
+          },
+        },
+      );
+    })(),
+
     EntityName: (() => {
       return defineComponent(
         world,

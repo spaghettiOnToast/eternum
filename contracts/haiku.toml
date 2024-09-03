@@ -1,0 +1,42 @@
+[haiku]
+name = "haiku"
+
+[haiku.metadata]
+torii_url = "http://localhost:8080/"
+rpc_url = "http://localhost:5050/"
+relay_url = "/ip4/127.0.0.1/udp/9090/quic-v1"
+database_url = "torii.db"
+world_address = "0x6918fe8c1ba16bdc83b9790cd9168d730aa98a22c65164578ef99af1c8cbc76"
+
+[haiku.context]
+story = "This is a real-time strategy game set in a medieval fantasy world. You will receive events from the game and you will have to generate lore for them. Keep it short and concise. Do not invent any places, just describe what's happening."
+
+[haiku.llm]
+chat_completion_provider = "openai"
+chat_completion_model = "gpt-4o-mini"
+chat_completion_url = "https://api.openai.com/v1/chat/completions"
+embedding_provider = "openai"
+embedding_model = "text-embedding-3-small"
+embedding_url = "https://api.openai.com/v1/embeddings"
+
+[haiku.db_config]
+vector_size = "1536"
+number_memory_to_retrieve = "1"
+
+[[events]]
+tag = "haiku-BattleStartEvent"
+
+[events.prompt]
+template = "A battle has started between ${attacker_name} and ${defender_name}. "
+
+[events.db_keys]
+storage_keys = ["x", "y"]
+retrieval_keys = ["x", "y"]
+
+[[events.keys_mapping]]
+key = "id"
+alias = ""
+
+[[events.keys_mapping]]
+key = "event_id"
+alias = ""

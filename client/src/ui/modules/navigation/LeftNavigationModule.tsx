@@ -1,4 +1,5 @@
 import { getEntitiesUtils } from "@/hooks/helpers/useEntities";
+import { useQuery } from "@/hooks/helpers/useQuery";
 import { useQuestClaimStatus } from "@/hooks/helpers/useQuests";
 import { useQuestStore } from "@/hooks/store/useQuestStore";
 import useUIStore from "@/hooks/store/useUIStore";
@@ -6,19 +7,22 @@ import { SelectPreviewBuildingMenu } from "@/ui/components/construction/SelectPr
 import { QuestId } from "@/ui/components/quest/questDetails";
 import { StructureConstructionMenu } from "@/ui/components/structures/construction/StructureConstructionMenu";
 import { BaseContainer } from "@/ui/containers/BaseContainer";
-import Button from "@/ui/elements/Button";
 import clsx from "clsx";
 import { motion } from "framer-motion";
 import { debounce } from "lodash";
-import { ArrowRight } from "lucide-react";
 import { useMemo, useState } from "react";
 import { construction, military, quests as questsPopup, worldStructures } from "../../components/navigation/Config";
 import CircleButton from "../../elements/CircleButton";
 import { EntityDetails } from "../entity-details/EntityDetails";
 import { Military } from "../military/Military";
 import { WorldStructuresMenu } from "../world-structures/WorldStructuresMenu";
-import { MenuEnum } from "./BottomNavigation";
-import { useQuery } from "@/hooks/helpers/useQuery";
+
+export enum MenuEnum {
+  military = "military",
+  construction = "construction",
+  worldStructures = "worldStructures",
+  entityDetails = "entityDetails",
+}
 
 export const BuildingThumbs = {
   hex: "/images/buildings/thumb/question.png",

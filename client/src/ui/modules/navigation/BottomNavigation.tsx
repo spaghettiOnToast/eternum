@@ -1,4 +1,5 @@
 import { useEntities } from "@/hooks/helpers/useEntities";
+import { useQuery } from "@/hooks/helpers/useQuery";
 import { QuestStatus, useQuestClaimStatus, useQuests, useUnclaimedQuestsCount } from "@/hooks/helpers/useQuests";
 import { useQuestStore } from "@/hooks/store/useQuestStore";
 import useUIStore from "@/hooks/store/useUIStore";
@@ -9,20 +10,14 @@ import clsx from "clsx";
 import { motion } from "framer-motion";
 import { ArrowDown } from "lucide-react";
 import { useMemo } from "react";
-import { guilds, leaderboard, quests as questsWindow } from "../../components/navigation/Config";
+import { guilds, leaderboard, prompt, quests as questsWindow } from "../../components/navigation/Config";
 import { Assistant } from "../assistant/Assistant";
 import { Guilds } from "../guilds/Guilds";
 import { Leaderboard } from "../leaderboard/LeaderBoard";
 import { Questing } from "../questing/Questing";
 import { BuildingThumbs } from "./LeftNavigationModule";
-import { useQuery } from "@/hooks/helpers/useQuery";
+import { HaikuMessages } from "../prompt/Prompt";
 
-export enum MenuEnum {
-  military = "military",
-  construction = "construction",
-  worldStructures = "worldStructures",
-  entityDetails = "entityDetails",
-}
 
 export const BottomNavigation = () => {
   const { isMapView } = useQuery();
@@ -95,6 +90,18 @@ export const BottomNavigation = () => {
           />
         ),
       },
+      {
+        button: (
+          <CircleButton
+            tooltipLocation="top"
+            image={BuildingThumbs.question}
+            label={prompt}
+            active={isPopupOpen(prompt)}
+            size="lg"
+            onClick={() => togglePopup(prompt)}
+          />
+        ),
+      },
     ];
   }, [unclaimedQuestsCount, selectedQuest, quests, structureEntityId]);
 
@@ -110,6 +117,7 @@ export const BottomNavigation = () => {
         <Assistant />
         <Leaderboard />
         <Guilds />
+        <HaikuMessages />
       </div>
 
       <motion.div
