@@ -71,4 +71,13 @@ dependencies = [
  "alexandria_math",
  "cubit",
  "dojo",
+ "haiku_event",
+]
+
+[[package]]
+name = "haiku_event"
+version = "0.1.0"
+source = "git+https://github.com/edisontim/haiku?tag=v0.0.3#8536bc23ec6f903cb6d09d340cfc35e6af991648"
+dependencies = [
+ "dojo",
 ]

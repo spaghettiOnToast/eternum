@@ -406,7 +406,7 @@ mod combat_systems {
     use eternum::models::config::{WeightConfig, WeightConfigCustomImpl};
     use eternum::models::event::{
         EternumEvent, EventType, EventData, BattleStartData, BattleJoinData, BattleLeaveData, BattleClaimData,
-        BattlePillageData
+        BattlePillageData, BattleStartEvent
     };
 
     use eternum::models::movable::{Movable, MovableCustomTrait};
@@ -751,6 +751,27 @@ mod combat_systems {
                     timestamp: starknet::get_block_timestamp(),
                 }
             );
+
+            emit!(
+                world,
+                BattleStartEvent {
+                    id,
+                    event_id: EventType::BattleStart,
+                    battle_entity_id: battle_id,
+                    attacker,
+                    attacker_name: get!(world, starknet::get_caller_address(), AddressName).name,
+                    attacker_army_entity_id: attacking_army_id,
+                    defender_name: get!(world, defender, AddressName).name,
+                    defender,
+                    defender_army_entity_id: defending_army_id,
+                    duration_left: battle.duration_left,
+                    x: battle_position.x,
+                    y: battle_position.y,
+                    structure_type: defender_structure.category,
+                    timestamp: starknet::get_block_timestamp(),
+                }
+            );
+
             battle_id
         }
 

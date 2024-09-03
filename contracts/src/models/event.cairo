@@ -2,6 +2,29 @@ use eternum::models::buildings::BuildingCategory;
 use eternum::{alias::ID, models::combat::BattleSide, models::structure::StructureCategory};
 use starknet::ContractAddress;
 
+
+#[derive(Copy, Drop, Serde)]
+#[dojo::event]
+#[dojo::model(namespace: "haiku", nomapping: true)]
+struct BattleStartEvent {
+    #[key]
+    id: ID,
+    #[key]
+    event_id: EventType,
+    battle_entity_id: ID,
+    attacker: ContractAddress,
+    attacker_name: felt252,
+    attacker_army_entity_id: ID,
+    defender_name: felt252,
+    defender: ContractAddress,
+    defender_army_entity_id: ID,
+    duration_left: u64,
+    x: u32,
+    y: u32,
+    structure_type: StructureCategory,
+    timestamp: u64,
+}
+
 #[derive(Copy, Drop, Serde)]
 #[dojo::event]
 #[dojo::model]
