@@ -14,6 +14,7 @@ import { ID } from "@bibliothecadao/eternum";
 import { useEffect, useMemo, useState } from "react";
 import { Battles } from "./Battles";
 import { Entities } from "./Entities";
+import { HexHistory } from "./HexHistory";
 
 export const CombatEntityDetails = () => {
   const selectedHex = useUIStore((state) => state.selectedHex);
@@ -77,6 +78,15 @@ export const CombatEntityDetails = () => {
             },
           ]
         : []),
+      {
+        key: "hex-history",
+        label: (
+          <div className="flex relative group flex-col items-center">
+            <div>Hex History</div>
+          </div>
+        ),
+        component: <HexHistory x={selectedHex?.col ?? 0} y={selectedHex?.row ?? 0} />,
+      },
     ],
     [hexPosition, ownArmy, structure, battles],
   );
