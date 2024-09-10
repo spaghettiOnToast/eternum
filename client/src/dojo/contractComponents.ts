@@ -387,7 +387,7 @@ export function defineContractComponents(world: World) {
           metadata: {
             namespace: "haiku",
             name: "PromptMessage",
-            types: ["ContractAddress", "u32", "u64"],
+            types: ["ContractAddress", "u32", "BytesArray", "BytesArray", "u64"],
             customTypes: ["ByteArray", "ByteArray"],
           },
         },
@@ -1292,6 +1292,50 @@ const eventsComponents = (world: World) => {
             metadata: {
               namespace: "eternum",
               name: "BattleStartData",
+              types: [
+                "u32",
+                "EventType",
+                "u32",
+                "ContractAddress",
+                "felt252",
+                "u32",
+                "felt252",
+                "ContractAddress",
+                "u32",
+                "u64",
+                "u32",
+                "u32",
+                "StructureCategory",
+                "u64",
+              ],
+              customTypes: [],
+            },
+          },
+        );
+      })(),
+      BattleStartEvent: (() => {
+        return defineComponent(
+          world,
+          {
+            id: RecsType.Number,
+            event_id: RecsType.String,
+            battle_entity_id: RecsType.Number,
+            attacker: RecsType.BigInt,
+            attacker_name: RecsType.BigInt,
+            attacker_army_entity_id: RecsType.Number,
+            defender_name: RecsType.BigInt,
+            defender: RecsType.BigInt,
+            defender_army_entity_id: RecsType.Number,
+            duration_left: RecsType.Number,
+            x: RecsType.Number,
+            y: RecsType.Number,
+            structure_type: RecsType.String,
+            timestamp: RecsType.Number,
+          },
+          {
+            metadata: {
+              namespace: "haiku",
+              name: "BattleStartEvent",
               types: [
                 "u32",
                 "EventType",

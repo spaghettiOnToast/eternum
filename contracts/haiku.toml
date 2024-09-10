@@ -5,15 +5,15 @@ name = "haiku"
 torii_url = "http://localhost:8080/"
 rpc_url = "http://localhost:5050/"
 relay_url = "/ip4/127.0.0.1/udp/9090/quic-v1"
-database_url = "torii.db"
+database_url = "haiku.db"
 world_address = "0x6918fe8c1ba16bdc83b9790cd9168d730aa98a22c65164578ef99af1c8cbc76"
 
 [haiku.context]
-story = "This is a real-time strategy game set in a medieval fantasy world. You will receive events from the game and you will have to generate lore for them. Keep it short and concise. Do not invent any places, just describe what's happening."
+story = "Keep your sentences short and concise, 3 sentences or less. This is a real-time strategy game set in a medieval fantasy world. "
 
 [haiku.llm]
 chat_completion_provider = "openai"
-chat_completion_model = "gpt-4o-mini"
+chat_completion_model = "gpt-4-turbo"
 chat_completion_url = "https://api.openai.com/v1/chat/completions"
 embedding_provider = "openai"
 embedding_model = "text-embedding-3-small"
@@ -27,11 +27,39 @@ number_memory_to_retrieve = "1"
 tag = "haiku-BattleStartEvent"
 
 [events.prompt]
-template = "A battle has started between ${attacker_name} and ${defender_name}. "
+template = "A battle has started between Lord \"${attacker_name}\" and Lord \"${defender_name}\". Keep these names and don't change them. Create lore around the start of the battle."
 
 [events.db_keys]
 storage_keys = ["x", "y"]
 retrieval_keys = ["x", "y"]
+
+[[events]]
+tag = "haiku-BattleLeaveEvent"
+
+[events.prompt]
+template = "Lord \"${leaver_name}\" has left a battle. Keep this name and don't change it. Create lore around Lord \"${leaver_name}\" leaving the battle."
+
+[events.db_keys]
+storage_keys = []
+retrieval_keys = []
+
+[[events.keys_mapping]]
+key = "id"
+alias = ""
+
+[[events.keys_mapping]]
+key = "event_id"
+alias = ""
+
+[[events]]
+tag = "haiku-BattleStartEvent"
+
+[events.prompt]
+template = "Replace this text by a prompt including the event details. Use the fields ${field_names} in your prompt."
+
+[events.db_keys]
+storage_keys = ["x"]
+retrieval_keys = []
 
 [[events.keys_mapping]]
 key = "id"

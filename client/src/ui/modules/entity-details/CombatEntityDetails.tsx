@@ -12,6 +12,7 @@ import { ContractAddress, ID } from "@bibliothecadao/eternum";
 import { useEffect, useMemo, useState } from "react";
 import { Battles } from "./Battles";
 import { Entities } from "./Entities";
+import { HexHistory } from "./HexHistory";
 
 export const CombatEntityDetails = () => {
   const dojo = useDojo();
@@ -74,6 +75,15 @@ export const CombatEntityDetails = () => {
           </div>
         ),
         component: <Battles position={hexPosition} ownArmy={ownArmy} />,
+      },
+      {
+        key: "hex-history",
+        label: (
+          <div className="flex relative group flex-col items-center">
+            <div>Hex History</div>
+          </div>
+        ),
+        component: <HexHistory x={selectedHex.col} y={selectedHex.row} />,
       },
     ],
     [selectedHex, userArmies, ownArmy?.entity_id, ownArmySelected?.id],

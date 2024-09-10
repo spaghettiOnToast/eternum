@@ -391,7 +391,7 @@ mod combat_systems {
     use eternum::models::config::{WeightConfig, WeightConfigCustomImpl};
     use eternum::models::event::{
         EternumEvent, EventType, EventData, BattleStartData, BattleJoinData, BattleLeaveData, BattleClaimData,
-        BattlePillageData, BattleStartEvent
+        BattlePillageData, BattleStartEvent, BattleLeaveEvent
     };
 
     use eternum::models::movable::{Movable, MovableCustomTrait};
@@ -890,6 +890,22 @@ mod combat_systems {
             emit!(
                 world,
                 BattleLeaveData {
+                    id: world.uuid(),
+                    event_id: EventType::BattleLeave,
+                    battle_entity_id: battle_id,
+                    leaver: starknet::get_caller_address(),
+                    leaver_name: get!(world, starknet::get_caller_address(), AddressName).name,
+                    leaver_army_entity_id: army_id,
+                    leaver_side: caller_army.battle_side,
+                    duration_left: battle.duration_left,
+                    x: battle_position.x,
+                    y: battle_position.y,
+                    timestamp: starknet::get_block_timestamp(),
+                }
+            );
+            emit!(
+                world,
+                BattleLeaveEvent {
                     id: world.uuid(),
                     event_id: EventType::BattleLeave,
                     battle_entity_id: battle_id,

@@ -26,6 +26,25 @@ struct BattleStartEvent {
 
 #[derive(Copy, Drop, Serde)]
 #[dojo::event]
+#[dojo::model(namespace: "haiku", nomapping: true)]
+pub struct BattleLeaveEvent {
+    #[key]
+    id: ID,
+    #[key]
+    event_id: EventType,
+    battle_entity_id: ID,
+    leaver: ContractAddress,
+    leaver_name: felt252,
+    leaver_army_entity_id: ID,
+    leaver_side: BattleSide,
+    duration_left: u64,
+    x: u32,
+    y: u32,
+    timestamp: u64,
+}
+
+#[derive(Copy, Drop, Serde)]
+#[dojo::event]
 #[dojo::model]
 pub struct EternumEvent {
     #[key]
