@@ -112,6 +112,13 @@ trait IMapConfig {
 
 #[dojo::interface]
 trait IProductionConfig {
+    fn change_production_cost_config(
+        ref world: IWorldDispatcher,
+        resource_type: u8,
+        cost_index: u8,
+        cost_resource_type: u8,
+        cost_resource_amount: u128
+    );
     fn set_production_config(ref world: IWorldDispatcher, resource_type: u8, amount: u128, cost: Span<(u8, u128)>);
 }
 
@@ -447,6 +454,37 @@ mod config_systems {
 
     #[abi(embed_v0)]
     impl ProductionConfigCustomImpl of super::IProductionConfig<ContractState> {
+        fn change_production_cost_config(
+            ref world: IWorldDispatcher,
+            resource_type: u8,
+            cost_index: u8,
+            cost_resource_type: u8,
+            cost_resource_amount: u128
+        ) {
+            assert_caller_is_admin(world);
+
+            let mut resource_production_config: ProductionConfig = get!(world, resource_type, ProductionConfig);
+            assert!(
+                resource_production_config.amount.is_non_zero(),
+                "Production config is not set for {} resource",
+                resource_type
+            );
+
+            assert!(
+                resource_production_config.output_count == 0,
+                "this function can't be used for resources that produce other resources"
+            );
+
+            assert!(cost_resource_amount > 0, "cost resource amount must be greater than 0");
+
+            let mut production_input: ProductionInput = get!(world, (resource_type, cost_index), ProductionInput);
+            assert!(production_input.input_resource_type == cost_resource_type, "input resource type does not match");
+
+            production_input.input_resource_amount = cost_resource_amount;
+            set!(world, (production_input));
+        }
+
+
         fn set_production_config(
             ref world: IWorldDispatcher, resource_type: u8, amount: u128, mut cost: Span<(u8, u128)>
         ) {
