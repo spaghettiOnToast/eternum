@@ -31,6 +31,7 @@ pub fn subscribe_with_reconnection(config: Config, event_sender: mpsc::Sender<Ga
         let max_backoff = Duration::from_secs(60);
 
         loop {
+            tracing::info!("Subscribing to event messages");
             let rcv = client
                 .on_event_message_updated(vec![EntityKeysClause::Keys(KeysClause {
                     keys: vec![],
@@ -42,7 +43,7 @@ pub fn subscribe_with_reconnection(config: Config, event_sender: mpsc::Sender<Ga
             match rcv {
                 Ok(mut rcv) => {
                     backoff = Duration::from_secs(1); // Reset backoff on successful connection
-
+                    tracing::info!("Reset backoff on successful connection");
                     while let Some(Ok((_, entity))) = rcv.next().await {
                         tracing::info!("Received event");
                         event_handler.handle_event(entity).await;
