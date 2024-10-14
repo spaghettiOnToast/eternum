@@ -1,6 +1,8 @@
 use std::fmt;
 
 const FELT_CENTER: u32 = 2_u32.pow(31) - 2;
+const SQUARE_SIZE: u32 = 1_000_000;
+const HALF_SQUARE_SIZE: u32 = SQUARE_SIZE / 2;
 
 pub struct Position {
     x: u32,
@@ -10,7 +12,9 @@ pub struct Position {
 
 impl Position {
     pub fn new(x: u32, y: u32) -> Self {
-        let normalized = x < FELT_CENTER && y < FELT_CENTER;
+        // if outside of square 1_000_000 x 1_000_000 around the center, it's already normalized
+        let normalized = (x as i64 - FELT_CENTER as i64).abs() > HALF_SQUARE_SIZE as i64
+            || (y as i64 - FELT_CENTER as i64).abs() > HALF_SQUARE_SIZE as i64;
         Position { x, y, normalized }
     }
 
