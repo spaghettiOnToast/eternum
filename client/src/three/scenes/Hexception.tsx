@@ -323,7 +323,7 @@ export default class HexceptionScene extends HexagonScene {
       this.buildingPreview?.resetBuildingColor();
     }
     const building = this.tileManager.getBuilding(normalizedCoords);
-    if (building) {
+    if (building && building.produced_resource_type) {
       this.state.setTooltip({
         content: (
           <div className="flex items-center space-x-1">
