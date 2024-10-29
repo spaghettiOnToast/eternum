@@ -10,7 +10,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:ui": "vitest --ui",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "lint": "npx eslint \"**/*.{ts,tsx}\" -c ./.eslintrc.json"
   },
   "peerDependencies": {
     "starknet": "6.11.0"

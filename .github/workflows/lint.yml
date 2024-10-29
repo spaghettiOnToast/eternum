@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  prettier:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -29,3 +29,6 @@ jobs:
 
       - name: Run Prettier
         run: pnpm run prettier-check .
+
+      - name: Run ESLint
+        run: pnpm run lint
