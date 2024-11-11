@@ -2,9 +2,9 @@
 default = "eternum"
 
 [env]
-account_address = "0x304202e63b4db2f125ff900a3423c92a684c21fb86a6036f273c473bb6c5dfa"
-private_key = "0x53c4fe9868decabe6b34437a3c4446f6f97c795bcf591f45aa365c372b5626"
-rpc_url = "https://api.cartridge.gg/x/eternum-rc1-1/katana"
+account_address = "0xf557e7f03e42f5cd05cb6d97e182419177e9c7674271c55db2273737e86e03"
+private_key = "0x188de4b80463d55f3488e7e7992d797c059b6fc07ad61765665db19692cbfa2"
+rpc_url = "https://api.cartridge.gg/x/eternum-player-house/katana"
 
 [world]
 seed = "eternum"

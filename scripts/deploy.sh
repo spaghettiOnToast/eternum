@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # Create a Slot -> if deploying to slot
-slot deployments create -t epic eternum-rc1-1 katana --version v1.0.0-rc.1 --invoke-max-steps 10000000 --disable-fee true --block-time 2000
+slot deployments create -t epic eternum-player-house katana --version v1.0.0-rc.2 --invoke-max-steps 10000000 --disable-fee true --block-time 1000
 
 # get accounts 
 # -> update prod env_variables.sh
 # -> update .env.production
 # -> update dojo_prod.toml
-slot deployments accounts eternum-rc1-1 katana 
+slot deployments accounts eternum-player-house katana 
 
 # get variables
 VITE_PUBLIC_MASTER_ADDRESS=
@@ -17,7 +17,7 @@ SOZO_WORLD=0x073bad29b5c12b09f9023e8d3a5876ea6ebd41fa26cab5035369fec4691067c2
 
 # update variables
 # if you have changed the name of the world you will need to update the address 
-sh ./scripts/update_variables.sh 0x304202e63b4db2f125ff900a3423c92a684c21fb86a6036f273c473bb6c5dfa <> eternum-rc1-1 0x073bad29b5c12b09f9023e8d3a5876ea6ebd41fa26cab5035369fec4691067c2
+sh ./scripts/update_variables.sh 0xf557e7f03e42f5cd05cb6d97e182419177e9c7674271c55db2273737e86e03 0x188de4b80463d55f3488e7e7992d797c059b6fc07ad61765665db19692cbfa2 eternum-player-house 0x05013b17c43a2b664ec2a38aa45f6d891db1188622ec7cf320411321c3248fb5
 
 # ------------------------------------------------------------------------------------------------
 # Build and deploy season pass contracts
@@ -68,7 +68,7 @@ echo "Migrating world..."
 sozo migrate --profile prod 
 
 echo "Setting up remote indexer on slot..."
-slot deployments create -t epic eternum-rc1-1 torii --version v1.0.0-rc.1 --world 0x073bad29b5c12b09f9023e8d3a5876ea6ebd41fa26cab5035369fec4691067c2 --rpc https://api.cartridge.gg/x/eternum-rc1-1/katana --start-block 0  --index-pending true
+slot deployments create -t epic eternum-player-house torii --version v1.0.0-rc.2 --world 0x05013b17c43a2b664ec2a38aa45f6d891db1188622ec7cf320411321c3248fb5 --rpc https://api.cartridge.gg/x/eternum-player-house/katana --start-block 0  --index-pending true
 
 echo "Setting up config..."
 

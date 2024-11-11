@@ -4,6 +4,7 @@ import productionManifest from "../contracts/manifest_prod.json";
 
 import { EternumConfig, EternumGlobalConfig, EternumProvider } from "@bibliothecadao/eternum";
 import { Account } from "starknet";
+import { fastMode } from "./configs";
 
 if (
   !process.env.VITE_PUBLIC_MASTER_ADDRESS ||
@@ -60,7 +61,7 @@ setupConfig.season = {
   lordsAddress: process.env.VITE_LORDS_ADDRESS!,
 };
 
-export const config = new EternumConfig(setupConfig);
+export const config = new EternumConfig(fastMode);
 
 console.log("Setting up config...");
 await config.setup(account, provider);
