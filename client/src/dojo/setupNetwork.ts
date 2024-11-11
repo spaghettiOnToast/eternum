@@ -26,13 +26,15 @@ export async function setupNetwork({ ...config }: DojoConfig) {
     feeTokenAddress: config.feeTokenAddress,
   });
 
-  try {
-    await burnerManager.init();
-    if (burnerManager.list().length === 0) {
-      await burnerManager.create();
+  if (import.meta.env.VITE_PUBLIC_DEV === "true") {
+    try {
+      await burnerManager.init();
+      if (burnerManager.list().length === 0) {
+        await burnerManager.create();
+      }
+    } catch (e) {
+      console.error(e);
     }
-  } catch (e) {
-    console.error(e);
   }
 
   return {
