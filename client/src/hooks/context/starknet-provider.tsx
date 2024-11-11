@@ -7,7 +7,7 @@ import { Connector, StarknetConfig, jsonRpcProvider, voyager } from "@starknet-r
 import { policies } from "./policies";
 
 const theme: string = "eternum";
-const slot: string = "eternum-rc1-1";
+const slot: string = "eternum-player-house";
 const namespace: string = "eternum";
 const colorMode: ColorMode = "dark";
 

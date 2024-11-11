@@ -55,7 +55,7 @@ const setupConfig: Config =
     : EternumGlobalConfig;
 
 // probably should be refactored
-setupConfig.season = {
+fastMode.season = {
   seasonPassAddress: process.env.VITE_SEASON_PASS_ADDRESS!,
   realmsAddress: process.env.VITE_REALMS_ADDRESS!,
   lordsAddress: process.env.VITE_LORDS_ADDRESS!,

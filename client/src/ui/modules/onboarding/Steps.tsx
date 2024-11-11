@@ -299,9 +299,9 @@ export const Naming = ({ onNext }: { onNext: () => void }) => {
       </div>
 
       <div className="flex space-x-2 mt-8 justify-center">
-        {numberRealms >= MAX_REALMS && playerRealms().length === 0 ? (
+        {numberRealms >= MAX_REALMS && numberRealms === 0 ? (
           <div>You have been eliminated. Please try again next Season.</div>
-        ) : playerRealms().length > 1 ? (
+        ) : numberRealms > 1 ? (
           <NavigateToRealm text={"begin"} />
         ) : (
           <Button disabled={!addressName} size="md" className="mx-auto" variant="primary" onClick={onNext}>
