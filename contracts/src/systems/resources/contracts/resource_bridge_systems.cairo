@@ -197,7 +197,7 @@ mod resource_bridge_systems {
     use s0_eternum::models::movable::{ArrivalTime, ArrivalTimeImpl};
     use s0_eternum::models::owner::{EntityOwner, Owner, EntityOwnerTrait};
     use s0_eternum::models::position::{Position, Coord};
-    use s0_eternum::models::resources::{Resource, ResourceImpl, RESOURCE_PRECISION};
+    use s0_eternum::models::resources::{Resource, ResourceImpl, ResourceTrait, RESOURCE_PRECISION};
     use s0_eternum::models::season::SeasonImpl;
     use s0_eternum::models::structure::{Structure, StructureTrait, StructureCategory};
     use s0_eternum::systems::resources::contracts::resource_systems::resource_systems::{InternalResourceSystemsImpl};
@@ -266,6 +266,15 @@ mod resource_bridge_systems {
                 token, token_amount_less_non_bank_fees
             );
 
+            // confirm that realm has enough capacity to receive the resource
+            let resource: Resource = ResourceImpl::get(
+                ref world, (recipient_realm_id, resource_bridge_token_whitelist.resource_type)
+            );
+            assert!(
+                !resource.balance_would_exceed_capacity(ref world, resource_amount_less_non_bank_fees),
+                "recipient realm does not have enough capacity to receive the resource"
+            );
+
             // transfer the resource to the recipient realm
             let resource = array![(resource_bridge_token_whitelist.resource_type, resource_amount_less_non_bank_fees)]
                 .span();
@@ -329,6 +338,15 @@ mod resource_bridge_systems {
                 token, token_amount_less_non_bank_fees
             );
             let resource_amount_less_all_fees = resource_amount_less_non_bank_fees - resource_bank_fees;
+
+            // ensure recipient realm has enough capacity to receive the resource
+            let resource: Resource = ResourceImpl::get(
+                ref world, (recipient_realm_id, resource_bridge_token_whitelist.resource_type)
+            );
+            assert!(
+                !resource.balance_would_exceed_capacity(ref world, resource_amount_less_all_fees),
+                "recipient realm does not have enough capacity to receive the resource"
+            );
 
             // transfer the resource to the recipient realm
             let resource = array![(resource_bridge_token_whitelist.resource_type, resource_amount_less_all_fees)]

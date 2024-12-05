@@ -238,6 +238,37 @@ impl ResourceImpl of ResourceTrait {
         }
     }
 
+
+    fn balance_would_exceed_capacity(self: Resource, ref world: WorldStorage, additional_amount: u128) -> bool {
+        let entity_structure: Structure = world.read_model(self.entity_id);
+        if entity_structure.category != StructureCategory::Realm {
+            return false;
+        }
+
+        let resource_weight_config: WeightConfig = world.read_model((WORLD_CONFIG_ID, self.resource_type));
+        let storehouse_building_quantity: BuildingQuantityv2 = world
+            .read_model((self.entity_id, BuildingCategory::Storehouse));
+        let storehouse_capacity: CapacityConfig = world.read_model(CapacityConfigCategory::Storehouse);
+
+        let storehouse_capacity_grams = storehouse_capacity.weight_gram
+            + (storehouse_building_quantity.value.into() * storehouse_capacity.weight_gram);
+
+        // Special case for weightless resources
+        if resource_weight_config.weight_gram == 0 {
+            return self.balance + additional_amount > storehouse_capacity_grams;
+        }
+
+        // Calculate total weight with precision for current + additional amount
+        let total_weight_grams_with_precision = WeightConfigImpl::get_weight_grams_with_precision(
+            ref world, self.resource_type, self.balance + additional_amount
+        );
+
+        let storehouse_capacity_grams_with_precision = storehouse_capacity_grams * RESOURCE_PRECISION;
+
+        total_weight_grams_with_precision > storehouse_capacity_grams_with_precision
+    }
+
+
     fn limit_balance_by_storehouse_capacity(ref self: Resource, ref world: WorldStorage) {
         let entity_structure: Structure = world.read_model(self.entity_id);
         if entity_structure.category != StructureCategory::Realm {
