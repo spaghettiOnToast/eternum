@@ -45,8 +45,8 @@ export const STAMINA_TRAVEL_COST = 10;
 export const STAMINA_EXPLORE_COST = 20;
 
 // ----- Resources ----- //
-export const RESOURCE_PRECISION = 1000;
-export const RESOURCE_MULTIPLIER = 1000;
+export const RESOURCE_PRECISION = 10_000;
+export const RESOURCE_MULTIPLIER = 10_000;
 export const RESOURCE_AMOUNT_PER_TICK = 10;
 export const STARTING_RESOURCES_INPUT_PRODUCTION_FACTOR = 6;
 

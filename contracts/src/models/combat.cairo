@@ -1225,7 +1225,7 @@ mod tests {
     use s0_eternum::models::quantity::{Quantity};
     use s0_eternum::models::resources::ResourceTrait;
     use s0_eternum::models::resources::ResourceTransferLockTrait;
-    use s0_eternum::models::resources::{Resource, ResourceImpl, ResourceTransferLock};
+    use s0_eternum::models::resources::{Resource, ResourceImpl, ResourceTransferLock, RESOURCE_PRECISION};
     use s0_eternum::utils::testing::world::spawn_eternum;
     use super::{Battle, BattleHealth, BattleArmy, BattleSide, Troops, TroopConfig, Army, ArmyImpl, Protectee};
 
@@ -1238,7 +1238,7 @@ mod tests {
             crossbowman_strength: 1,
             advantage_percent: 1000,
             disadvantage_percent: 1000,
-            max_troop_count: 10_000_000_000_000 * 1000,
+            max_troop_count: 10_000_000_000_000 * RESOURCE_PRECISION.try_into().unwrap(),
             pillage_health_divisor: 8,
             army_free_per_structure: 100,
             army_extra_per_building: 100,
