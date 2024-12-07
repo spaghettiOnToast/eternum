@@ -154,6 +154,16 @@ export const setProductionConfig = async (config: Config) => {
         };
       }),
     };
+    // Improved logging to show full details
+    console.log(`Production config for resource ${resourceId}:`);
+    console.log('Output amount:', calldata.amount);
+    console.log('Input costs:');
+    calldata.cost.forEach((cost, index) => {
+      console.log(`  Cost ${index + 1}:`, {
+        resource: cost.resource,
+        amount: cost.amount,
+      });
+    });
 
     calldataArray.push(calldata);
   }
